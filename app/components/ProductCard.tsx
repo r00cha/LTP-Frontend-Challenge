@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { toDisplayName, formatter } from "~/utils/formatters";
-import type { Product } from "~/routes/home";
+import type { Product } from "~/utils/api.server";
 
 
 export function ProductCard({ product }: { product: Product }) {

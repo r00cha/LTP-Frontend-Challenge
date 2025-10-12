@@ -57,7 +57,7 @@ export default function App() {
   return (
   <div className="min-h-screen flex flex-col">
     <Header cartCount={cartCount} />
-    <main className="mx-auto w-full container flex-1 flex-col px-4 py-8">
+    <main className="mx-auto w-full  flex-1 flex-col px-4 py-8">
       <Outlet />
     </main>
 
@@ -87,11 +87,11 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
+     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-4 px-4 py-16">
+      <h1 className="text-3xl font-semibold  text-brand text-green-900">{message}</h1>
+      <p className="text-slate-600">{details}</p>
       {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
+        <pre className="overflow-x-auto rounded-lg bg-slate-900/90 p-4 text-sm text-white">
           <code>{stack}</code>
         </pre>
       )}

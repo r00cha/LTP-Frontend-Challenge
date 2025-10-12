@@ -1,5 +1,5 @@
 /**
- * Converts a kebab-case string to a display-friendly title case string.
+ * Converts a "-" separated string to a display-friendly title case string.
  * Example: "beauty-products" -> "Beauty Products"
  */
 export function toDisplayName(category: string): string {

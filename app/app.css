@@ -13,9 +13,22 @@ body {
   @apply bg-[#F4F6F6];
 }
 
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 @layer utilities {
   .bg-brand{
     @apply bg-[#013033];
+  }
+
+  .text-primary {
+    @apply text-[#013033];
   }
 
   .font-grotesk {
