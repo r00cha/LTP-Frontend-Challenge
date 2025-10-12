@@ -1,5 +1,5 @@
 export const SORT_OPTIONS = [
-  { label: "Featured", value: "featured" },
+  { label: "Relevance", value: "relevance" },
   { label: "Price: Low to High", value: "price-asc" },
   { label: "Price: High to Low", value: "price-desc" },
   { label: "Top Rated", value: "rating-desc" },
@@ -13,14 +13,14 @@ type SortConfig = {
 };
 
 const SORT_MAP: Record<SortValue, SortConfig> = {
-  "featured": {},
+  "relevance": {},
   "price-asc": { sortBy: "price", order: "asc" },
   "price-desc": { sortBy: "price", order: "desc" },
   "rating-desc": { sortBy: "rating", order: "desc" },
 };
 
 export function getSortConfig(sortValue: string): SortConfig {
-  return SORT_MAP[sortValue as SortValue] ?? SORT_MAP.featured;
+  return SORT_MAP[sortValue as SortValue] ?? SORT_MAP.relevance;
 }
 
 export function isSortValue(value: string): value is SortValue {

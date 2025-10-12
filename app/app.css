@@ -64,4 +64,18 @@ html::-webkit-scrollbar {
   .rotate-360 {
     transform: rotate(360deg);
   }
+
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  /* Ensure buttons show pointer cursor even inside grab cursor containers */
+  button {
+    cursor: pointer !important;
+  }
 }
