@@ -1,5 +1,13 @@
 const BASE_URL = "https://dummyjson.com";
 
+export type Review = {
+  rating: number;
+  comment: string;
+  date: string;
+  reviewerName: string;
+  reviewerEmail: string;
+};
+
 export type Product = {
   id: number;
   title: string;
@@ -12,6 +20,7 @@ export type Product = {
   stock?: number;
   images?: string[];
   discountPercentage?: number;
+  reviews?: Review[];
 };
 
 type ProductsResponse = {

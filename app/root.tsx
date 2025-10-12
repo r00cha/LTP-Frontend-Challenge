@@ -61,7 +61,7 @@ export default function App() {
       <Outlet />
     </main>
 
-    <footer className="border-t border-slate-200 bg-[#fef9ed] py-6">
+    <footer className="mt-4 border-t border-slate-200 bg-[#fef9ed] py-6">
       <div className="mx-auto w-full container px-4 text-sm text-[#005838] text-center">
           © {new Date().getFullYear()} Miguel Rocha, LTP Labs. All rights reserved.
       </div>

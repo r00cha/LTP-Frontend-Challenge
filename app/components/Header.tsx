@@ -34,7 +34,7 @@ export const Header = ({cartCount}: {cartCount: number}) => {
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:block font-grotesk">
           <NavLink to="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">Home</NavLink>
-          <NavLink to="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">Shop</NavLink>
+          <NavLink to="#shop" className="hover-underline active-scale text-white px-4 py-2 text-lg">Shop</NavLink>
           <NavLink to="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">About</NavLink>
           <NavLink to="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">Contact</NavLink>
           <NavLink to="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">Blog</NavLink>
@@ -95,7 +95,7 @@ export const Header = ({cartCount}: {cartCount: number}) => {
             Home
           </NavLink>
           <NavLink
-            to="#"
+            to="#shop"
             onClick={toggleMenu}
             className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
           >

@@ -40,6 +40,14 @@ html::-webkit-scrollbar {
     @apply text-[#BBEA70];
   }
 
+  .border-brand {
+    @apply border-[#013033];
+  }
+
+  .border-primary {
+    @apply border-[#BBEA70];
+  }
+
   .font-grotesk {
     font-family: var(--font-grotesk);
   }

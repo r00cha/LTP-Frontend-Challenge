@@ -10,7 +10,7 @@ export function ProductCard({ product }: { product: Product }) {
       key={id}
       className="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
     >
-      <Link to={`/products/${id}`} className="flex flex-1 flex-col">
+      <Link to={`/products/${id}`} prefetch="intent" className="flex flex-1 flex-col">
         <div className="relative">
           <div className="aspect-square overflow-hidden bg-slate-100">
             <img
