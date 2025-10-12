@@ -5,10 +5,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { Header } from "./components/Header";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -19,9 +21,17 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap",
   },
 ];
+
+export async function loader({ request }: Route.LoaderArgs) {
+  //const session = await getCartSession(request);
+  //const cart = getCartFromSession(session);
+  
+  //return { cartCount: getCartCount(cart) };
+  return { cartCount: 2};
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,7 +42,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="antialiased">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -42,7 +52,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const {cartCount} = useLoaderData<typeof loader>();
+
+  return (
+  <div className="min-h-screen flex flex-col">
+    <Header cartCount={cartCount} />
+    <main className="mx-auto w-full container flex-1 flex-col px-4 py-8">
+      <Outlet />
+    </main>
+
+    <footer className="border-t border-slate-200 bg-[#fef9ed] py-6">
+      <div className="mx-auto w-full container px-4 text-sm text-[#005838] text-center">
+          © {new Date().getFullYear()} Miguel Rocha, LTP Labs. All rights reserved.
+      </div>
+    </footer>
+  </div>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

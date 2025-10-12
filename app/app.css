@@ -3,6 +3,9 @@
 @theme {
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  
+  --font-grotesk: "Space Grotesk", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 html,
@@ -12,7 +15,11 @@ body {
 
 @layer utilities {
   .bg-brand{
-    @apply bg-[#064D4F];
+    @apply bg-[#013033];
+  }
+
+  .font-grotesk {
+    font-family: var(--font-grotesk);
   }
 
   .hover-underline {

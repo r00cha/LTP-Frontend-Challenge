@@ -1,7 +1,8 @@
 
 import { useState } from "react";
+import {NavLink} from "react-router";
 
-export const Header = () => {
+export const Header = ({cartCount}: {cartCount: number}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -10,37 +11,33 @@ export const Header = () => {
 
   return (
     <>
-      <header className={`fixed top-4 left-1/2 -translate-x-1/2 flex bg-brand rounded-2xl items-center justify-between p-4 px-6 md:px-12 w-[calc(100%-1rem)] max-w-[90rem] z-50 transition-shadow duration-300 ${
+      <header className={`fixed top-4 left-1/2 -translate-x-1/2 flex bg-brand rounded-2xl items-center justify-between p-4 px-6 md:px-12 w-[calc(100%-1rem)] container z-50 transition-shadow duration-300 ${
         isMenuOpen ? '' : 'shadow-lg'
       }`}>
         {/* Logo */}
         <div className="flex items-center">
           {/* Hamburger Menu Button - Mobile only */}
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleMenu();
-            }}
+            onClick={toggleMenu}
             aria-label="Toggle menu"
             className="mr-4 lg:hidden active:scale-90 transition-all duration-150"
           >
             <HamburgerIcon isOpen={isMenuOpen} />
           </button>
           
-          <a href="/" className="flex items-center cursor-pointer">
+          <NavLink to="/" className="flex items-center cursor-pointer">
             <img src="/logo-ltp.png" alt="LTP Logo" className="h-10 md:h-12 w-auto" />
             <span className="hidden sm:block text-white font-bold text-lg md:text-xl ml-2">LTP Store</span>
-          </a>
+          </NavLink>
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:block">
-          <a href="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">Home</a>
-          <a href="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">Shop</a>
-          <a href="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">About</a>
-          <a href="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">Contact</a>
-          <a href="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">Blog</a>
+        <nav className="hidden lg:block font-grotesk">
+          <NavLink to="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">Home</NavLink>
+          <NavLink to="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">Shop</NavLink>
+          <NavLink to="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">About</NavLink>
+          <NavLink to="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">Contact</NavLink>
+          <NavLink to="#" className="hover-underline active-scale text-white px-4 py-2 text-lg">Blog</NavLink>
         </nav>
 
         {/* Right side: Icon Buttons + Hamburger */}
@@ -64,7 +61,7 @@ export const Header = () => {
             </IconButton>
 
             {/* Cart icon */}
-            <IconButton ariaLabel="Shopping Cart" onClick={() => isMenuOpen && setIsMenuOpen(false)}>
+            <IconButton ariaLabel="Shopping Cart" onClick={() => isMenuOpen && setIsMenuOpen(false)} className="relative">
               <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="currentColor" viewBox="0 0 32 32">
                 <path d="M10,20a1,1,0,0,1-1-.8L6.66,7.41A3,3,0,0,0,3.72,5H2A1,1,0,0,1,2,3H3.72a5,5,0,0,1,4.9,4L11,18.8A1,1,0,0,1,10.2,20Z"/>
                 <path d="M11,27H9.14a4.14,4.14,0,0,1-.38-8.26l18.41-1.67L28.78,9H8A1,1,0,0,1,8,7H30a1,1,0,0,1,.77.37A1,1,0,0,1,31,8.2l-2,10a1,1,0,0,1-.89.8L8.94,20.74A2.13,2.13,0,0,0,9.14,25H11a1,1,0,0,1,0,2Z"/>
@@ -72,6 +69,11 @@ export const Header = () => {
                 <path d="M14,30a4,4,0,1,1,4-4A4,4,0,0,1,14,30Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,14,24Z"/>
                 <path d="M23,27H17a1,1,0,0,1,0-2h6a1,1,0,0,1,0,2Z"/>
               </svg>
+              {cartCount > 0 ? (
+                <span className="absolute -right-2 -top-1 border-2 sm:border-2 border-[#013033] flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-rose-500 text-sm font-semibold text-white">
+                  {cartCount}
+                </span>
+              ) : null}
             </IconButton>
           </div>
 
@@ -84,42 +86,42 @@ export const Header = () => {
           isMenuOpen ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
-        <nav className="flex flex-col items-center justify-center h-[100dvh] gap-8">
-          <a
-            href="#"
+        <nav className="flex flex-col items-center justify-center h-[100dvh] gap-8 font-grotesk">
+          <NavLink
+            to="#"
             onClick={toggleMenu}
             className="active-scale text-white text-3xl font-semibold hover:text-white/80 transition-colors"
           >
             Home
-          </a>
-          <a
-            href="#"
+          </NavLink>
+          <NavLink
+            to="#"
             onClick={toggleMenu}
             className="active-scale text-white text-3xl font-semibold hover:text-white/80 transition-colors"
           >
             Shop
-          </a>
-          <a
-            href="#"
+          </NavLink>
+          <NavLink
+            to="#"
             onClick={toggleMenu}
             className="active-scale text-white text-3xl font-semibold hover:text-white/80 transition-colors"
           >
             About
-          </a>
-          <a
-            href="#"
+          </NavLink>
+          <NavLink
+            to="#"
             onClick={toggleMenu}
             className="active-scale text-white text-3xl font-semibold hover:text-white/80 transition-colors"
           >
             Contact
-          </a>
-          <a
-            href="#"
+          </NavLink>
+          <NavLink
+            to="#"
             onClick={toggleMenu}
             className="active-scale text-white text-3xl font-semibold hover:text-white/80 transition-colors"
           >
             Blog
-          </a>
+          </NavLink>
         </nav>
       </div>
     </>
@@ -131,14 +133,15 @@ interface IconButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   ariaLabel?: string;
+  className?: string;
 }
 
-const IconButton = ({ children, onClick, ariaLabel }: IconButtonProps) => {
+const IconButton = ({ children, onClick, ariaLabel, className }: IconButtonProps) => {
   return (
     <button
       onClick={onClick}
       aria-label={ariaLabel}
-      className="p-2 sm:p-3 bg-white text-[#064D4F] rounded-full hover:bg-white/80 active:scale-80  transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] cursor-pointer"
+      className={`p-2 sm:p-3 bg-white text-[#013033] rounded-full hover:bg-white/80 active:scale-80  transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] cursor-pointer ${className}`}
     >
       {children}
     </button>
@@ -152,22 +155,22 @@ interface HamburgerIconProps {
 
 const HamburgerIcon = ({ isOpen }: HamburgerIconProps) => {
   return (
-    <div className="w-4 h-4 sm:w-5 sm:h-5 flex flex-col justify-center items-center gap-[0.1875rem] sm:gap-1 cursor-pointer">
+    <div className="w-5 h-5 flex flex-col justify-center items-center gap-[0.1875rem] sm:gap-1 cursor-pointer">
       {/* Top bar */}
       <span
-        className={`block h-[0.125rem] sm:h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+        className={`block h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
           isOpen ? 'rotate-45 translate-y-[0.3125rem] sm:translate-y-[0.375rem]' : ''
         }`}
       />
       {/* Middle bar */}
       <span
-        className={`block h-[0.125rem] sm:h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+        className={`block h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
           isOpen ? 'opacity-0' : 'opacity-100'
         }`}
       />
       {/* Bottom bar */}
       <span
-        className={`block h-[0.125rem] sm:h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+        className={`block h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
           isOpen ? '-rotate-45 -translate-y-[0.3125rem] sm:-translate-y-[0.375rem]' : ''
         }`}
       />
