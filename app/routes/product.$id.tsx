@@ -102,9 +102,9 @@ export default function Product() {
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
+                    className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-400 ${
                       selectedImage === index
-                        ? 'border-brand '
+                        ? 'border-brand'
                         : 'border-slate-200 hover:border-slate-300'
                     }`}
                   >
@@ -225,7 +225,7 @@ export default function Product() {
               whileTap={product.stock !== 0 ? { scale: 0.98 } : undefined}
               initial="initial"
             >
-              <div className="relative overflow-hidden flex items-center gap-2">
+              <div className="relative text-xl overflow-hidden flex items-center gap-2">
                 <motion.span
                   variants={{
                     initial: { y: 0 },
@@ -248,7 +248,7 @@ export default function Product() {
                 </motion.span>
               </div>
               
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 32 32">
+              <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 32 32">
                 <path d="M10,20a1,1,0,0,1-1-.8L6.66,7.41A3,3,0,0,0,3.72,5H2A1,1,0,0,1,2,3H3.72a5,5,0,0,1,4.9,4L11,18.8A1,1,0,0,1,10.2,20Z"/>
                 <path d="M11,27H9.14a4.14,4.14,0,0,1-.38-8.26l18.41-1.67L28.78,9H8A1,1,0,0,1,8,7H30a1,1,0,0,1,.77.37A1,1,0,0,1,31,8.2l-2,10a1,1,0,0,1-.89.8L8.94,20.74A2.13,2.13,0,0,0,9.14,25H11a1,1,0,0,1,0,2Z"/>
                 <path d="M26,30a4,4,0,1,1,4-4A4,4,0,0,1,26,30Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,26,24Z"/>
@@ -298,7 +298,7 @@ export default function Product() {
 
       {/* Reviews Section */}
       {product.reviews && product.reviews.length > 0 && (
-        <div className="w-[95vw] max-w-7xl">
+        <div className="w-[95vw] max-w-7xl px-4">
           <div className="mb-6">
             <h2 className="text-3xl font-bold text-slate-900 font-grotesk mb-2">Customer Reviews</h2>
             <p className="text-slate-600">See what our customers are saying about this product</p>

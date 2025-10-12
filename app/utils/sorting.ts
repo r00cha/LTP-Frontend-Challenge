@@ -22,7 +22,3 @@ const SORT_MAP: Record<SortValue, SortConfig> = {
 export function getSortConfig(sortValue: string): SortConfig {
   return SORT_MAP[sortValue as SortValue] ?? SORT_MAP.relevance;
 }
-
-export function isSortValue(value: string): value is SortValue {
-  return SORT_OPTIONS.some((option) => option.value === value);
-}
