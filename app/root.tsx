@@ -57,7 +57,7 @@ export default function App() {
   return (
   <div className="min-h-screen flex flex-col">
     <Header cartCount={cartCount} />
-    <main className="mx-auto w-full  flex-1 flex-col px-4 py-8">
+    <main className="mx-auto w-full flex-1 flex-col">
       <Outlet />
     </main>
 

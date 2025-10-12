@@ -14,6 +14,7 @@ body {
 }
 
 html {
+  scroll-behavior: smooth;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
 }
@@ -27,8 +28,16 @@ html::-webkit-scrollbar {
     @apply bg-[#013033];
   }
 
-  .text-primary {
+  .bg-primary {
+    @apply bg-[#BBEA70];
+  }
+
+  .text-brand {
     @apply text-[#013033];
+  }
+
+  .text-primary {
+    @apply text-[#BBEA70];
   }
 
   .font-grotesk {
@@ -41,7 +50,7 @@ html::-webkit-scrollbar {
   
   .hover-underline::after {
     content: '';
-    @apply absolute left-[20%] bottom-0 w-0 h-[2px] bg-white transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)];
+    @apply absolute left-[20%] bottom-0 w-0 h-[2px] bg-[#BBEA70] transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)];
   }
 
   .hover-underline:hover::after {
@@ -50,5 +59,9 @@ html::-webkit-scrollbar {
 
   .active-scale {
     @apply active:scale-90 transition-transform duration-150 ease-[cubic-bezier(0.4,0,0.2,1)];
+  }
+
+  .rotate-360 {
+    transform: rotate(360deg);
   }
 }

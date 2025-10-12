@@ -11,7 +11,7 @@ export const Header = ({cartCount}: {cartCount: number}) => {
 
   return (
     <>
-      <header className={`fixed top-4 left-1/2 -translate-x-1/2 flex bg-brand rounded-2xl items-center justify-between p-4 px-6 md:px-12 w-[calc(100%-1rem)] container z-50 transition-shadow duration-300 ${
+      <header className={`fixed top-4 left-1/2 -translate-x-1/2 flex bg-brand rounded-2xl items-center justify-between py-4 px-6 md:px-12 w-[95vw] max-w-7xl z-50 transition-shadow duration-300 ${
         isMenuOpen ? '' : 'shadow-lg'
       }`}>
         {/* Logo */}
@@ -26,8 +26,8 @@ export const Header = ({cartCount}: {cartCount: number}) => {
           </button>
           
           <NavLink to="/" className="flex items-center cursor-pointer">
-            <img src="/logo-ltp.png" alt="LTP Logo" className="h-10 md:h-12 w-auto" />
-            <span className="hidden sm:block text-white font-bold text-lg md:text-xl ml-2">LTP Store</span>
+            <img src="/logo-ltp-white.png" alt="LTP Logo" className="h-10 md:h-12 w-auto" />
+            <span className="hidden sm:block text-white font-bold text-lg md:text-xl ml-2">Store</span>
           </NavLink>
         </div>
 
@@ -70,7 +70,7 @@ export const Header = ({cartCount}: {cartCount: number}) => {
                 <path d="M23,27H17a1,1,0,0,1,0-2h6a1,1,0,0,1,0,2Z"/>
               </svg>
               {cartCount > 0 ? (
-                <span className="absolute -right-2 -top-1 border-2 sm:border-2 border-[#013033] flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-rose-500 text-sm font-semibold text-white">
+                <span className="no-rotate absolute -right-2 -top-1 border-2 sm:border-2 border-[#013033] flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-rose-500 text-sm font-semibold text-white">
                   {cartCount}
                 </span>
               ) : null}
@@ -90,35 +90,35 @@ export const Header = ({cartCount}: {cartCount: number}) => {
           <NavLink
             to="#"
             onClick={toggleMenu}
-            className="active-scale text-white text-3xl font-semibold hover:text-white/80 transition-colors"
+            className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
           >
             Home
           </NavLink>
           <NavLink
             to="#"
             onClick={toggleMenu}
-            className="active-scale text-white text-3xl font-semibold hover:text-white/80 transition-colors"
+            className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
           >
             Shop
           </NavLink>
           <NavLink
             to="#"
             onClick={toggleMenu}
-            className="active-scale text-white text-3xl font-semibold hover:text-white/80 transition-colors"
+            className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
           >
             About
           </NavLink>
           <NavLink
             to="#"
             onClick={toggleMenu}
-            className="active-scale text-white text-3xl font-semibold hover:text-white/80 transition-colors"
+            className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
           >
             Contact
           </NavLink>
           <NavLink
             to="#"
             onClick={toggleMenu}
-            className="active-scale text-white text-3xl font-semibold hover:text-white/80 transition-colors"
+            className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
           >
             Blog
           </NavLink>
@@ -141,9 +141,11 @@ const IconButton = ({ children, onClick, ariaLabel, className }: IconButtonProps
     <button
       onClick={onClick}
       aria-label={ariaLabel}
-      className={`p-2 sm:p-3 bg-white text-[#013033] rounded-full hover:bg-white/80 active:scale-80  transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] cursor-pointer ${className}`}
+      className={`group p-2 sm:p-3 bg-primary text-brand rounded-full hover:opacity-80 active:scale-80 transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] cursor-pointer ${className}`}
     >
-      {children}
+      <div className="[&>*:not(.no-rotate)]:group-hover:rotate-360 [&>*:not(.no-rotate)]:transition-transform [&>*:not(.no-rotate)]:duration-500 [&>*:not(.no-rotate)]:ease-[cubic-bezier(0.4,0,0.2,1)]">
+        {children}
+      </div>
     </button>
   );
 };
@@ -155,7 +157,7 @@ interface HamburgerIconProps {
 
 const HamburgerIcon = ({ isOpen }: HamburgerIconProps) => {
   return (
-    <div className="w-5 h-5 flex flex-col justify-center items-center gap-[0.1875rem] sm:gap-1 cursor-pointer">
+    <div className="w-5 h-5 flex flex-col justify-center items-center gap-[0.1875rem] sm:gap-1 cursor-pointer" >
       {/* Top bar */}
       <span
         className={`block h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
