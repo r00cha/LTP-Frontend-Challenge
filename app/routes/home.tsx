@@ -1,12 +1,14 @@
 import { useLoaderData, useSearchParams, useNavigate } from "react-router";
 import type { Route } from "./+types/home";
 import { ProductCard } from "~/components/ProductCard";
-import { PAGE_SIZE } from "~/utils/pagination";
+import { PAGE_SIZE, calculatePagination } from "~/utils/pagination";
 import { getSortConfig } from "~/utils/sorting";
 import { EmptyState } from "~/components/EmptyState";
 import { fetchCategories, fetchProducts } from "~/utils/api.server";
 import { HeroSection } from "~/components/HeroSection";
 import { ProductFilters } from "~/components/ProductFilters";
+import { Pagination } from "~/components/Pagination";
+import { FeaturesSection } from "~/components/FeaturesSection";
 import { motion } from "motion/react";
 
 
@@ -42,16 +44,14 @@ export async function loader({ request }: Route.LoaderArgs) {
     fetchCategories(),
   ]);
 
-  // Calculate full pagination with total
-  // const pagination = calculatePagination(productsData.total, {
-  //   page: currentPage,
-  //   pageSize: PAGE_SIZE,
-  // });
+  // Calculate pagination with total items
+  const pagination = calculatePagination( productsData.total, currentPage, PAGE_SIZE,
+  );
   
   return {
     products: productsData.products,
     total: productsData.total,
-    //...pagination,
+    ...pagination,
     sort: sortParam,
     category: categoryParam,
     categories,
@@ -67,16 +67,16 @@ const {
     category,
     total,
     sort,
-    // currentPage,
-    // totalPages,
-    // showingStart,
-    // showingEnd,
+    currentPage,
+    totalPages,
+    firstProductNumber,
+    lastProductNumber,
   } = useLoaderData<typeof loader>();
   
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const handleCategorySelect = (selectedCategory: string) => {
+  const handleCategoryChange = (selectedCategory: string) => {
     // Early return if selecting the same category
     if (selectedCategory === category) return;
     
@@ -92,7 +92,7 @@ const {
     navigate(`?${newSearchParams.toString()}`, { replace: true, preventScrollReset: true });
   };
 
-  const handleSortSelect = (selectedSort: string) => {
+  const handleSortChange = (selectedSort: string) => {
     // Early return if selecting the same sort option
     if (selectedSort === sort) return;
     
@@ -106,6 +106,24 @@ const {
     // Reset to page 1 when changing sort (remove page param to keep URL clean)
     newSearchParams.delete("page");
     navigate(`?${newSearchParams.toString()}`, { replace: true, preventScrollReset: true });
+  };
+
+  const handlePageChange = (page: number) => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    // Remove page param if page 1 (default state), otherwise set it
+    if (page === 1) {
+      newSearchParams.delete("page");
+    } else {
+      newSearchParams.set("page", page.toString());
+    }
+    navigate(`?${newSearchParams.toString()}`, { replace: true, preventScrollReset: true });
+    
+    // Scroll to shop section smoothly after navigation
+    const shopElement = document.getElementById("shop");
+    if (shopElement) {
+      shopElement.scrollIntoView();
+    }
+    
   };
 
   return (
@@ -122,8 +140,8 @@ const {
             category={category}
             sort={sort}
             categories={categories}
-            onCategoryChange={handleCategorySelect}
-            onSortChange={handleSortSelect}
+            onCategoryChange={handleCategoryChange}
+            onSortChange={handleSortChange}
           />
 
         </div>
@@ -136,9 +154,8 @@ const {
         className="mt-4 flex max-w-6xl container px-4 items-center justify-between text-sm text-slate-500"
       >
         <span>
-          {/* Showing {showingStart}-{showingEnd} of {total} products */}
           Showing <span className="font-semibold text-brand">
-            Fix This
+            {firstProductNumber}-{lastProductNumber}
           </span> of <span className="font-semibold text-brand">{total}</span>{" "}
           products
         </span>
@@ -156,7 +173,7 @@ const {
         />
       ) : (
         <motion.div
-          key={`${category}-${sort}`}
+          key={`${category}-${sort}-${currentPage}`}
           className="max-w-6xl px-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           initial="hidden"
           animate="visible"
@@ -185,6 +202,15 @@ const {
       )}
 
       {/* Pagination Controls */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
+
+      {/* Features Section */}
+      <FeaturesSection />
+
     </div>
   );
 }

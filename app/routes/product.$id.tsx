@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate, useFetcher } from "react-router";
+import { useLoaderData, useNavigate, useFetcher, Link } from "react-router";
 import type { Route } from "./+types/product.$id";
 import type { Product } from "~/utils/api.server";
 import { formatter, toDisplayName } from "~/utils/formatters";
@@ -171,7 +171,7 @@ export default function Product() {
               key={selectedImage}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.6 }}
               className="aspect-square rounded-2xl overflow-hidden bg-slate-100"
             >
               <img
@@ -183,39 +183,37 @@ export default function Product() {
 
             {/* Thumbnail Gallery */}
             {images.length > 1 ? (
-              <div className="flex gap-3 overflow-x-auto scrollbar-hide">
+              <div className="flex flex-wrap gap-3">
                 {images.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-400 ${
+                    className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-400 ${
                     selectedImage === index
                       ? 'border-brand'
                       : 'border-slate-200 hover:border-slate-300'
                   }`}
                 >
-                  <img
-                    src={image}
-                    alt={`${product.title} - ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              ))}
-            </div>
-            ) : null}
-          
-          </div>
+                    <img
+                      src={image}
+                      alt={`${product.title} - ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            ) : null}          </div>
 
           {/* Product Info */}
           <div className="flex flex-col gap-4">
             {/* Category Badge */}
-            <span className="inline-flex items-center w-fit rounded-full bg-brand/10 text-sm font-medium text-brand uppercase tracking-wide">
+            <Link to={`/?category=${product.category}`}  className="inline-flex items-center w-fit rounded-full bg-brand px-2 py-1 text-sm font-medium text-primary uppercase tracking-wide">
               {toDisplayName(product.category)}
-            </span>
+            </Link>
 
             {/* Title & Brand */}
             <div className="overflow-hidden">
-              <motion.h1 className="text-3xl md:text-4xl font-bold text-slate-900 font-grotesk">
+              <motion.h1 className="text-3xl md:text-4xl font-bold text-brand font-grotesk">
                 {product.title.split(' ').map((word, index) => (
                   <motion.span
                     key={index}
@@ -233,8 +231,8 @@ export default function Product() {
                 ))}
               </motion.h1>
             </div>
-            <div className="overflow-hidden">  
-              {product.brand && (
+            {product.brand && (
+              <div className="overflow-hidden">  
                 <motion.p 
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -243,8 +241,8 @@ export default function Product() {
                 >
                   by <span className="font-semibold mb-2">{product.brand}</span>
                 </motion.p>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Rating */}
             <div className="flex items-center gap-3">
@@ -256,10 +254,12 @@ export default function Product() {
                       i < product.rating ? 'text-yellow-400' : 'text-slate-300'
                     }`}
                     fill="currentColor"
-                    viewBox="0 0 20 20"
+                    viewBox="0 0 24 24"
                   >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
                   </svg>
+                 
+
                 ))}
               </div>
               <span className="text-slate-600 font-medium">
@@ -268,12 +268,12 @@ export default function Product() {
             </div>
 
             {/* Price */}
-            <div className="flex gap-3 items-center">
+            <div className="flex flex-col lg:flex-row gap-3 lg:items-center">
               <span className="text-4xl font-bold text-brand">
                 {formatter.format(product.price)}
               </span>
               {discount > 0 && (
-                <>
+                <div className="flex gap-3 items-center">
                   <span className="text-2xl text-slate-400 line-through">
                     {formatter.format(originalPrice)}
                   </span>
@@ -291,7 +291,7 @@ export default function Product() {
                   >
                     -{Math.round(discount)}%
                   </motion.span>
-                </>
+                </div>
               )}
             </div>
 

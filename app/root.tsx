@@ -11,6 +11,7 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -61,11 +62,7 @@ export default function App() {
       <Outlet />
     </main>
 
-    <footer className="mt-4 border-t border-slate-200 bg-[#fef9ed] py-6">
-      <div className="mx-auto w-full container px-4 text-sm text-[#005838] text-center">
-          © {new Date().getFullYear()} Miguel Rocha, LTP Labs. All rights reserved.
-      </div>
-    </footer>
+    <Footer />
   </div>
   );
 }
