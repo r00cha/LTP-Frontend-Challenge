@@ -158,7 +158,7 @@ const {
         id="shop"
         className="mt-4 flex max-w-6xl container px-4 items-center justify-between text-sm text-slate-500"
       >
-        <span>
+        <span className="-mt-8 sm:mt-0">
           Showing <span className="font-semibold text-brand">
             {firstProductNumber}-{lastProductNumber}
           </span> of <span className="font-semibold text-brand">{total}</span>{" "}
@@ -179,7 +179,7 @@ const {
       ) : (
         <motion.div
           key={`${category}-${sort}-${currentPage}`}
-          className="max-w-6xl px-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="max-w-6xl px-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 -mt-4 sm:mt-0"
           initial="hidden"
           animate="visible"
           variants={{

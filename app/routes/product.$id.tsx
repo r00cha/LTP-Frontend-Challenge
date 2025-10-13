@@ -3,7 +3,7 @@ import type { Route } from "./+types/product.$id";
 import type { Product } from "~/utils/api.server";
 import { formatter, toDisplayName } from "~/utils/formatters";
 import { motion, AnimatePresence } from "motion/react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { fetchProduct } from "~/utils/api.server";
 import {
   commitCartSession,
@@ -121,11 +121,22 @@ export default function Product() {
   const fetcher = useFetcher<ActionData>();
   const [quantity, setQuantity] = useState(1);
 
-  const images = product.images || [product.thumbnail];
-  const discount = product.discountPercentage || 0;
-  const originalPrice = discount > 0 ? product.price / (1 - discount / 100) : product.price;
-  const stock = product.stock ?? 0;
-  const maxQuantity = stock !== undefined && stock > 0 ? Math.min(stock, 99) : 1;
+  // Memoize product-derived values to prevent recalculation on every render
+  const images = useMemo(() => product.images || [product.thumbnail], [product.images, product.thumbnail]);
+  
+  const discount = useMemo(() => product.discountPercentage || 0, [product.discountPercentage]);
+  
+  const originalPrice = useMemo(
+    () => discount > 0 ? product.price / (1 - discount / 100) : product.price,
+    [discount, product.price]
+  );
+  
+  const stock = useMemo(() => product.stock ?? 0, [product.stock]);
+  
+  const maxQuantity = useMemo(
+    () => stock !== undefined && stock > 0 ? Math.min(stock, 99) : 1,
+    [stock]
+  );
 
 
   const handleAddToCart = () => { 
