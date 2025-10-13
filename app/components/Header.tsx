@@ -91,42 +91,82 @@ export const Header = ({cartCount}: {cartCount: number}) => {
           isMenuOpen ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
-        <nav className="flex flex-col items-center justify-center h-[100dvh] gap-8 font-grotesk">
-          <NavLink
-            to="/"
-            onClick={toggleMenu}
-            className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/#shop"
-            onClick={toggleMenu}
-            className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
-          >
-            Shop
-          </NavLink>
-          <NavLink
-            to="#"
-            onClick={toggleMenu}
-            className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
-          >
-            About
-          </NavLink>
-          <NavLink
-            to="#"
-            onClick={toggleMenu}
-            className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
-          >
-            Contact
-          </NavLink>
-          <NavLink
-            to="#"
-            onClick={toggleMenu}
-            className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
-          >
-            Blog
-          </NavLink>
+        <nav className="flex flex-col items-center justify-center h-[100lvh] gap-8 font-grotesk">
+          <div className="overflow-hidden">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isMenuOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+              transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
+            >
+              <NavLink
+                to="/"
+                onClick={toggleMenu}
+                className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
+              >
+                Home
+              </NavLink>
+            </motion.div>
+          </div>
+          <div className="overflow-hidden">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isMenuOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+              transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
+            >
+              <NavLink
+                to="/#shop"
+                onClick={toggleMenu}
+                className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
+              >
+                Shop
+              </NavLink>
+            </motion.div>
+          </div>
+          <div className="overflow-hidden">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isMenuOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+              transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
+            >
+              <NavLink
+                to="#"
+                onClick={toggleMenu}
+                className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
+              >
+                About
+              </NavLink>
+            </motion.div>
+          </div>
+          <div className="overflow-hidden">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isMenuOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+              transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
+            >
+              <NavLink
+                to="#"
+                onClick={toggleMenu}
+                className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
+              >
+                Contact
+              </NavLink>
+            </motion.div>
+          </div>
+          <div className="overflow-hidden">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={isMenuOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+              transition={{ delay: 0.9, duration: 0.5, ease: "easeOut" }}
+            >
+              <NavLink
+                to="#"
+                onClick={toggleMenu}
+                className="active-scale hover-underline text-white text-3xl font-semibold hover:text-white/80 transition-colors"
+              >
+                Blog
+              </NavLink>
+            </motion.div>
+          </div>
         </nav>
       </div>
     </>
