@@ -17,6 +17,7 @@ import type { Route } from "./+types/root";
 import "./app.css";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
+import { useRef } from "react";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -58,12 +59,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const {cartCount} = useLoaderData<typeof loader>();
+  const cartIconRef = useRef<SVGSVGElement>(null);
 
   return (
   <div className="min-h-screen flex flex-col">
-    <Header cartCount={cartCount} />
+    <Header ref={cartIconRef} cartCount={cartCount} />
     <main className="mx-auto w-full flex-1 flex-col">
-      <Outlet />
+      <Outlet context={{ cartIconRef }} />
     </main>
 
     <Footer />

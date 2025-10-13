@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate, useFetcher, Link } from "react-router";
+import { useLoaderData, useNavigate, useFetcher, Link, useOutletContext } from "react-router";
 import type { Route } from "./+types/product.$id";
 import type { Product } from "~/utils/api.server";
 import { formatter, toDisplayName } from "~/utils/formatters";
@@ -13,6 +13,10 @@ import {
   upsertCartItem,
 } from "../utils/cart.server";
 import { ReviewCard } from "~/components/ReviewCard";
+
+type OutletContext = {
+  cartIconRef: React.RefObject<SVGSVGElement>;
+};
 
 export async function loader({ params }: Route.LoaderArgs) {
   const productId = params.id;
@@ -108,6 +112,7 @@ export function meta({ data }: Route.MetaArgs) {
 
 export default function Product() {
   const { product } = useLoaderData<typeof loader>();
+  const { cartIconRef } = useOutletContext<OutletContext>();
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -421,9 +426,9 @@ export default function Product() {
         </div>
       </div>
 
-      {/* Flying Image Animation */}
+      {/* Flying Image Animation - Desktop only */}
       <AnimatePresence>
-        {isAnimating && imageRef.current && (
+        {isAnimating && imageRef.current && cartIconRef.current && window.innerWidth >= 768 && (
           <motion.div
             initial={{
               position: 'fixed',
@@ -435,8 +440,8 @@ export default function Product() {
               zIndex: 9999,
             }}
             animate={{
-              left: window.innerWidth - 350,
-              top: 0,
+              left: `calc(${cartIconRef.current.getBoundingClientRect().left}px + 2rem)`,
+              top: `calc(${cartIconRef.current.getBoundingClientRect().top}px - 2rem)`,
               width: 60,
               height: 60,
               opacity: 0,
@@ -447,7 +452,7 @@ export default function Product() {
               ease: [0.43, 0.13, 0.23, 0.96],
               opacity: { delay: 1, duration: 1 }
             }}
-            className="pointer-events-none "
+            className="pointer-events-none"
           >
             <img
               src={images[selectedImage]}
@@ -473,6 +478,96 @@ export default function Product() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+
+export function ErrorBoundary() {
+  const navigate = useNavigate();
+  
+  return (
+    <div className="w-full mt-28 flex flex-col gap-6 items-center pb-12">
+      {/* Back Button */}
+      <div className="w-[95vw] max-w-7xl -mb-2">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1 text-slate-600 hover:text-brand transition-colors duration-200 group"
+        >
+          <svg
+            className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          <span className="font-medium">Back to products</span>
+        </button>
+      </div>
+
+      {/* Error State */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-[95vw] max-w-7xl bg-white rounded-2xl shadow-lg p-12 text-center"
+      >
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          className="w-32 h-32 mx-auto mb-6 rounded-full bg-slate-100 flex items-center justify-center"
+        >
+          <svg className="h-16 w-16 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </motion.div>
+
+        <motion.h2
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="text-3xl font-bold text-brand font-grotesk mb-3"
+        >
+          Product Not Found
+        </motion.h2>
+        
+        <motion.p
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className="text-slate-600 mb-8"
+        >
+          The product you're looking for doesn't exist or may have been removed.
+        </motion.p>
+
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="flex gap-4 justify-center"
+        >
+          <Link to="/">
+            <motion.button
+              className="bg-brand text-primary text-sm sm:text-base font-semibold py-4 px-8 rounded-lg"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Browse All Products
+            </motion.button>
+          </Link>
+          
+          <motion.button
+            onClick={() => navigate(-1)}
+            className="bg-slate-100 text-slate-700 text-sm sm:text-base font-semibold py-4 px-8 rounded-lg hover:bg-slate-200 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Go Back
+          </motion.button>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

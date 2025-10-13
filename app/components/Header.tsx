@@ -1,9 +1,9 @@
 
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import {NavLink} from "react-router";
 import { motion } from "motion/react";
 
-export const Header = ({cartCount}: {cartCount: number}) => {
+export const Header = forwardRef<SVGSVGElement, {cartCount: number}>(({cartCount}, cartIconRef) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -68,7 +68,7 @@ export const Header = ({cartCount}: {cartCount: number}) => {
             {/* Cart icon */}
             <NavLink to="/cart">
               <IconButton ariaLabel="Shopping Cart" onClick={() => isMenuOpen && setIsMenuOpen(false)} className="relative">
-                <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="currentColor" viewBox="0 0 32 32">
+                <svg ref={cartIconRef} className="h-4 w-4 sm:h-5 sm:w-5" fill="currentColor" viewBox="0 0 32 32">
                   <path d="M10,20a1,1,0,0,1-1-.8L6.66,7.41A3,3,0,0,0,3.72,5H2A1,1,0,0,1,2,3H3.72a5,5,0,0,1,4.9,4L11,18.8A1,1,0,0,1,10.2,20Z"/>
                   <path d="M11,27H9.14a4.14,4.14,0,0,1-.38-8.26l18.41-1.67L28.78,9H8A1,1,0,0,1,8,7H30a1,1,0,0,1,.77.37A1,1,0,0,1,31,8.2l-2,10a1,1,0,0,1-.89.8L8.94,20.74A2.13,2.13,0,0,0,9.14,25H11a1,1,0,0,1,0,2Z"/>
                   <path d="M26,30a4,4,0,1,1,4-4A4,4,0,0,1,26,30Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,26,24Z"/>
@@ -179,7 +179,9 @@ export const Header = ({cartCount}: {cartCount: number}) => {
       </div>
     </>
   );
-};
+});
+
+Header.displayName = "Header";
 
 // Reusable IconButton component
 interface IconButtonProps {

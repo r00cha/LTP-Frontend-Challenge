@@ -133,10 +133,10 @@ export function CartItemCard({ item, index }: CartItemCardProps) {
           </div>
         </div>
 
-        {/* Item Total (Desktop) */}
-        <div className="hidden md:flex items-start justify-end">
-          <p className="text-xl font-bold text-brand">
-            {formatter.format(item.price * item.quantity)}
+        {/* Item Total */}
+        <div className=" md:flex items-start justify-end">
+          <p className="flex flex- gap-1 items-center text-xl font-bold text-brand">
+            <span className="text-lg font-semibold text-slate-950">Total:</span> {formatter.format(item.price * item.quantity)}
           </p>
         </div>
       </div>

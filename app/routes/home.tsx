@@ -15,7 +15,7 @@ import { motion } from "motion/react";
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "LTP Labs Store" },
-    { name: "description", content: "Online Store Frontend Challenge!" },
+    { name: "description", content: "Built in 3 days by Miguel Rocha for a frontend challenge - An online store showcasing modern design, animation, and seamless UX!" },
   ];
 }
 
@@ -32,17 +32,22 @@ export async function loader({ request }: Route.LoaderArgs) {
   const skip = (currentPage - 1) * PAGE_SIZE;
   const limit = PAGE_SIZE;
 
-  // Fetch products and categories data in parallel
-  const [productsData, categories] = await Promise.all([
-    fetchProducts({
-      category: categoryParam,
-      limit,
-      skip,
-      sortBy: sortConfig.sortBy,
-      order: sortConfig.order,
-    }),
-    fetchCategories(),
-  ]);
+  // Fetch categories first to validate the category parameter
+  const categories = await fetchCategories();
+  
+  // Validate category - default to "all" if invalid
+  const validCategory = categoryParam === "all" || categories.includes(categoryParam)
+    ? categoryParam
+    : "all";
+
+  // Fetch products with validated category
+  const productsData = await fetchProducts({
+    category: validCategory,
+    limit,
+    skip,
+    sortBy: sortConfig.sortBy,
+    order: sortConfig.order,
+  });
 
   // Calculate pagination with total items
   const pagination = calculatePagination( productsData.total, currentPage, PAGE_SIZE,
@@ -53,7 +58,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     total: productsData.total,
     ...pagination,
     sort: sortParam,
-    category: categoryParam,
+    category: validCategory,
     categories,
   };
  

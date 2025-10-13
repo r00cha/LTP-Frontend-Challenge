@@ -69,7 +69,7 @@ export function OrderSummary({ subtotal, tax, shipping, total }: OrderSummaryPro
       <motion.button
         onClick={handleClearCart}
         disabled={fetcher.state !== "idle"}
-        className="w-full mt-3 bg-slate-100 text-slate-700 font-medium py-3 px-6 rounded-lg hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full mt-3 bg-slate-100 text-slate-700 font-medium py-4 px-6 rounded-lg hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         transition={{ duration: 0.2 }}

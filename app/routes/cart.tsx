@@ -31,14 +31,10 @@ export async function loader({ request }: Route.LoaderArgs) {
   };
 }
 
-type ActionData = {
-  status: "success" | "error";
-  message: string;
-};
-
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   const intent = formData.get("intent");
+  
   const session = await getCartSession(request);
   const cart = getCartFromSession(session);
 
@@ -46,7 +42,7 @@ export async function action({ request }: Route.ActionArgs) {
     const itemId = Number(formData.get("itemId"));
     const quantity = Number(formData.get("quantity"));
 
-    if (!Number.isFinite(itemId) || !Number.isFinite(quantity)) {
+    if (!Number(itemId) || !Number(quantity)) {
       return Response.json(
         { status: "error", message: "Invalid item or quantity" },
         { status: 400 }
@@ -69,7 +65,7 @@ export async function action({ request }: Route.ActionArgs) {
   if (intent === "remove-item") {
     const itemId = Number(formData.get("itemId"));
     
-    if (!Number.isFinite(itemId)) {
+    if (!Number(itemId)) {
       return Response.json(
         { status: "error", message: "Invalid item" },
         { status: 400 }
