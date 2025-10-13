@@ -50,11 +50,7 @@ export async function action({ request, params}: Route.ActionArgs) {
     );
   }
 
-  const requestedQuantity = Number(formData.get("quantity"));
-  const normalizedQuantity = Number.isFinite(requestedQuantity)
-    ? Math.floor(requestedQuantity)
-    : 1;
-
+  // 1. Fetch product details
   const product = await fetchProduct(productId);
 
   if (product.stock && product.stock <= 0) {
@@ -64,25 +60,26 @@ export async function action({ request, params}: Route.ActionArgs) {
     );
   }
 
-  // Clamp on the server (authoritative)
-  const safeQuantity = Math.max(
-    1,
-    Math.min(normalizedQuantity || 1, product.stock || 99, 99)
-  );
-
+  // 2. Get quantity from form 
+  const quantity = Number(formData.get("quantity"));
+  
+  // 3. Get current cart from cookie
   const session = await getCartSession(request);
   const cart = getCartFromSession(session);
 
+  // 4. Add/update product in cart
   const updatedCart = upsertCartItem(cart, {
     id: product.id,
     title: product.title,
     price: product.price,
     thumbnail: product.thumbnail,
-    quantity: safeQuantity,
+    quantity: quantity,
   });
 
+  // 5. Save updated cart to session
   setCartOnSession(session, updatedCart);
 
+  // 6. Return response with Set-Cookie header
   return Response.json(
     {
       status: "success",
@@ -127,16 +124,26 @@ export default function Product() {
 
 
   const handleAddToCart = () => { 
-    // Add to cart logic here
-    console.log(`Added ${quantity} of ${product.title} to cart`); 
+    if (isAnimating) return; // Prevent multiple clicks during animation
+
+    const formData = new FormData();
+    formData.set("intent", "add-to-cart");
+    formData.set("quantity", String(quantity));
     
     // Trigger animation
     setIsAnimating(true);
     
     // Reset animation after it completes
     setTimeout(() => {
+      fetcher.submit(formData, { 
+        method: "post",
+        action: `/products/${product.id}`
+      });
+      
       setIsAnimating(false);
     }, 1000);
+
+   
   };
 
   return (
@@ -202,7 +209,8 @@ export default function Product() {
                   </button>
                 ))}
               </div>
-            ) : null}          </div>
+            ) : null}          
+            </div>
 
           {/* Product Info */}
           <div className="flex flex-col gap-4">
@@ -256,7 +264,7 @@ export default function Product() {
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
+                    <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
                   </svg>
                  
 
@@ -368,12 +376,15 @@ export default function Product() {
             {/* Add to Cart Button */}
             <motion.button
               onClick={handleAddToCart}
-              disabled={stock === 0 }
-              className="relative flex items-center justify-center gap-2 bg-primary text-brand font-semibold py-4 px-6 rounded-lg overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={stock === 0 || isAnimating || fetcher.state === "submitting"}
+              className="relative flex items-center justify-center gap-2 bg-primary text-brand font-semibold py-4 px-6 rounded-lg overflow-hidden transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
               initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              whileHover={stock !== 0 ? "hover" : undefined}
-              whileTap={stock !== 0 ? { scale: 0.98 } : undefined}
+              animate={{ 
+                opacity: stock === 0 || isAnimating || fetcher.state === "submitting" ? 0.5 : 1, 
+                scale: 1 
+              }}
+              whileHover={stock !== 0 && !isAnimating && fetcher.state !== "submitting" ? "hover" : undefined}
+              whileTap={stock !== 0 && !isAnimating && fetcher.state !== "submitting" ? { scale: 0.98 } : undefined}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
               <div className="relative text-xl overflow-hidden flex items-center gap-2">
@@ -385,7 +396,7 @@ export default function Product() {
                   transition={{ duration: 0.25, ease: "easeInOut" }}
                   className="block"
                 >
-                  Add to Cart
+                  {isAnimating || fetcher.state === "submitting" ? "On the way..." : "Add to Cart"}
                 </motion.span>
                 <motion.span
                   initial={{ y: "100%" }}
@@ -395,7 +406,7 @@ export default function Product() {
                   transition={{ duration: 0.25, ease: "easeInOut" }}
                   className="block absolute inset-0"
                 >
-                  Add to Cart
+                  {isAnimating || fetcher.state === "submitting" ? "On the way..." : "Add to Cart"}
                 </motion.span>
               </div>
             

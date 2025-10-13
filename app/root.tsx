@@ -7,6 +7,11 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "react-router";
+import { 
+  getCartCount,
+  getCartFromSession,
+  getCartSession
+} from "./utils/cart.server";
 
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -27,11 +32,10 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export async function loader({ request }: Route.LoaderArgs) {
-  //const session = await getCartSession(request);
-  //const cart = getCartFromSession(session);
+  const session = await getCartSession(request);
+  const cart = getCartFromSession(session);
   
-  //return { cartCount: getCartCount(cart) };
-  return { cartCount: 2};
+  return { cartCount: getCartCount(cart) };
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
