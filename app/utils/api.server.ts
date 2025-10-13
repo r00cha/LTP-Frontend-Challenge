@@ -49,7 +49,7 @@ export async function fetchProducts(
         : new URL(`${BASE_URL}/products`);
 
     //Add possible query params to the URL
-    if (limit) endpoint.searchParams.set("limit", String(limit));
+    if (limit && limit > 0) endpoint.searchParams.set("limit", String(limit));
     if (skip && skip > 0) endpoint.searchParams.set("skip", String(skip));
     if (sortBy) endpoint.searchParams.set("sortBy", sortBy);
     if (order) endpoint.searchParams.set("order", order);
@@ -62,6 +62,16 @@ export async function fetchProducts(
     }
 
     return response.json();
+}
+
+export async function fetchProduct(productId: string): Promise<Product> {
+  const response = await fetch(`${BASE_URL}/products/${productId}`);
+
+  if (!response.ok) {
+    throw new Response("Product not found", { status: response.status });
+  }
+
+  return response.json();
 }
 
 

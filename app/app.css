@@ -6,6 +6,9 @@
   
   --font-grotesk: "Space Grotesk", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --brand: #103531;
+  --primary: #BBEA70;
 }
 
 html,
@@ -25,27 +28,27 @@ html::-webkit-scrollbar {
 
 @layer utilities {
   .bg-brand{
-    @apply bg-[#013033];
+    @apply bg-[var(--brand)];
   }
 
   .bg-primary {
-    @apply bg-[#BBEA70];
+    @apply bg-[var(--primary)];
   }
 
   .text-brand {
-    @apply text-[#013033];
+    @apply text-[var(--brand)];
   }
 
   .text-primary {
-    @apply text-[#BBEA70];
+    @apply text-[var(--primary)];
   }
 
   .border-brand {
-    @apply border-[#013033];
+    @apply border-[var(--brand)];
   }
 
   .border-primary {
-    @apply border-[#BBEA70];
+    @apply border-[var(--primary)];
   }
 
   .font-grotesk {

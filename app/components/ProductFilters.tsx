@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { SORT_OPTIONS } from "~/utils/sorting";
+import { toDisplayName } from "~/utils/formatters";
 
 interface ProductFiltersProps {
   category: string;
@@ -78,7 +79,7 @@ export function ProductFilters({
                     : "bg-white text-slate-700 border border-slate-300 hover:border-brand hover:text-brand"
                 }`}
               >
-                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                {toDisplayName(cat)}
               </button>
             ))}
           </div>

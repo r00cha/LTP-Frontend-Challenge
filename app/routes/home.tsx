@@ -12,7 +12,7 @@ import { motion } from "motion/react";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "LTP Online Store" },
+    { title: "LTP Labs Store" },
     { name: "description", content: "Online Store Frontend Challenge!" },
   ];
 }
@@ -76,7 +76,7 @@ const {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const handleSelectCategory = (selectedCategory: string) => {
+  const handleCategorySelect = (selectedCategory: string) => {
     // Early return if selecting the same category
     if (selectedCategory === category) return;
     
@@ -92,16 +92,16 @@ const {
     navigate(`?${newSearchParams.toString()}`, { replace: true, preventScrollReset: true });
   };
 
-  const handleSortChange = (newSort: string) => {
+  const handleSortSelect = (selectedSort: string) => {
     // Early return if selecting the same sort option
-    if (newSort === sort) return;
+    if (selectedSort === sort) return;
     
     const newSearchParams = new URLSearchParams(searchParams);
     // Reset sort to default if "relevance" is selected
-    if (newSort === "relevance") {
+    if (selectedSort === "relevance") {
       newSearchParams.delete("sort");
     } else {
-      newSearchParams.set("sort", newSort);
+      newSearchParams.set("sort", selectedSort);
     }
     // Reset to page 1 when changing sort (remove page param to keep URL clean)
     newSearchParams.delete("page");
@@ -122,8 +122,8 @@ const {
             category={category}
             sort={sort}
             categories={categories}
-            onCategoryChange={handleSelectCategory}
-            onSortChange={handleSortChange}
+            onCategoryChange={handleCategorySelect}
+            onSortChange={handleSortSelect}
           />
 
         </div>
@@ -133,7 +133,7 @@ const {
       {/* Showing x of y products */}
       <div
         id="shop"
-        className="flex max-w-6xl container px-4 items-center justify-between text-sm text-slate-500"
+        className="mt-4 flex max-w-6xl container px-4 items-center justify-between text-sm text-slate-500"
       >
         <span>
           {/* Showing {showingStart}-{showingEnd} of {total} products */}

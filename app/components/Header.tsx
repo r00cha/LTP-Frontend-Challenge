@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import {NavLink} from "react-router";
+import { motion } from "motion/react";
 
 export const Header = ({cartCount}: {cartCount: number}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,7 +12,11 @@ export const Header = ({cartCount}: {cartCount: number}) => {
 
   return (
     <>
-      <header className={`fixed top-4 left-1/2 -translate-x-1/2 flex bg-brand rounded-2xl items-center justify-between py-4 px-6 md:px-12 w-[95vw] max-w-7xl z-50 transition-shadow duration-300 ${
+      <motion.header 
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
+        className={`fixed top-4 left-1/2 -translate-x-1/2 flex bg-brand rounded-2xl items-center justify-between py-4 px-6 md:px-12 w-[95vw] max-w-7xl z-50 transition-shadow duration-300 ${
         isMenuOpen ? '' : 'shadow-lg'
       }`}>
         {/* Logo */}
@@ -78,7 +83,7 @@ export const Header = ({cartCount}: {cartCount: number}) => {
           </div>
 
         </div>
-      </header>
+      </motion.header>
 
       {/* Mobile Menu Overlay */}
       <div

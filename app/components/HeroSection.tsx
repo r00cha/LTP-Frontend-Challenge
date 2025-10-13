@@ -1,12 +1,9 @@
 import { motion } from "motion/react";
-import { useState } from "react";
 import LottieComponent from "./LottieComponent";
 import blobData from "../../lotties/blob.json";
 import { DrawCircleText } from "./DrawCircleText";
 
 export function HeroSection() {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <section className="bg-brand mt-4 rounded-2xl w-[95vw] max-w-7xl shadow-lg overflow-hidden">
       <div className="p-4 flex flex-col sm:flex-row gap-8 sm:gap-12 md:gap-16 lg:gap-24 items-center justify-start mx-auto w-[90%]">
@@ -30,33 +27,51 @@ export function HeroSection() {
               We <DrawCircleText text={"have"} /> it!
             </motion.span>
           </h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.8 }}
-            className="max-w-sm sm:max-w-md lg:max-w-lg text-[#FAF5E0] text-sm sm:text-base "
-          >
-            Here you'll find a variety of products to suit your needs. Browse through our categories and discover amazing deals!
-          </motion.p>
+
+          <div className="overflow-hidden">
+            <motion.p className="max-w-sm sm:max-w-md lg:max-w-lg text-[#FAF5E0] text-sm sm:text-base ">
+              {"Here you'll find a variety of products to suit your needs. Browse through our categories and discover amazing deals!".split(' ').map((word, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ 
+                    duration: 0.4, 
+                    delay: 0.8 + (index * 0.02),
+                    ease: "easeOut" 
+                  }}
+                  className="inline-block mr-[0.25em]"
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </motion.p>
+          </div>
+
           <motion.a 
             href="#shop" 
             className="flex items-center gap-1 bg-primary text-[#043027] font-semibold py-3 px-4 sm:py-4 sm:px-5 rounded overflow-hidden group"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            whileHover="hover"
             transition={{ duration: 0.3, delay: 1.2 }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
           >
             <div className="relative text-xl overflow-hidden h-5">
               <motion.span
-                animate={{ y: isHovered ? "-100%" : -5 }}
+                initial={{ y: -5 }}
+                variants={{
+                  hover: { y: "-100%" },
+                }}
                 transition={{ duration: 0.25, ease: "easeInOut" }}
                 className="block"
               >
                 Shop now
               </motion.span>
               <motion.span
-                animate={{ y: isHovered ? -5 : "100%" }}
+                initial={{ y: "100%" }}
+                variants={{
+                  hover: { y: -5 }
+                }}
                 transition={{ duration: 0.25, ease: "easeInOut" }}
                 className="block absolute inset-0"
               >
